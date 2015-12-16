@@ -44,7 +44,7 @@ public class LibMan extends JTree{
 			System.out.println("No of Chapters "+temp2.length);
 			for(int j=0;j<temp2.length;j++)
 			{
-				node2=new DefaultMutableTreeNode(temp2[j].getName().substring(temp2[j].getName().lastIndexOf('_')+1));
+				node2=new DefaultMutableTreeNode(temp2[j].getName());
 				node.add(node2);
 			}
 		}
