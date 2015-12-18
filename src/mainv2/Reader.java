@@ -38,6 +38,7 @@ class Body extends JFrame implements Runnable{
 	private JButton button;
 	private LibMan libMan=new LibMan();
 	private Events events=new Events();
+	private ImageList<String> imageList;
 	Files files;
 	Image image;
 	String home="C:\\Users\\Vivek\\Downloads\\My Mangas";
@@ -54,6 +55,7 @@ class Body extends JFrame implements Runnable{
 		jsp=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,jsp1,jsp2);
 		jsp.setDividerLocation(100);
 		setNav(new JPanel());
+		getNav().add(imageList=new ImageList<>());
 	}
 	@Override
 	public void run() {
@@ -111,39 +113,23 @@ class Body extends JFrame implements Runnable{
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode()==KeyEvent.VK_LEFT)
-			{
 				image.change(-1);
-			}
 			else if(e.getKeyCode()==KeyEvent.VK_RIGHT)
-			{
 				image.change(1);
-			}
 			else if(e.getKeyCode()==KeyEvent.VK_DOWN)
 				if(e.getModifiers()==InputEvent.CTRL_MASK)
-					{
 					image.change(2);
-					}
-				else{
-					image.scroll(1);
-				}
-					//getRender().scroll(1,getDialog(),getJsp2());
+				else	image.scroll(1);
 			else if(e.getKeyCode()==KeyEvent.VK_UP)
 				if(e.getModifiers()==InputEvent.CTRL_MASK)
-					{
 					image.change(-2);
-					}
-				else 
-					{
-					image.scroll(-1);
-					}
-		}
+				else 	image.scroll(-1);
+			}
 	
 		@Override
-		public void keyReleased(KeyEvent e) {
-			// TODO Auto-generated method stub
+		public void keyReleased(KeyEvent e) {}
 	
-		}
-	
+		@SuppressWarnings("synthetic-access")
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("Open"))
@@ -154,18 +140,14 @@ class Body extends JFrame implements Runnable{
 				{
 					files.setChapter(dialog.getSelectedFile());
 					files.setManga(dialog.getSelectedFile().getParentFile());
+					image.setImalgeList(imageList);
 					image.draw(files);
-				}
-				
+				}		
 			}
 			else if(e.getActionCommand().equals("Prev"))
-			{
 				image.change(-1);
-			}
 			else if(e.getActionCommand().equals("Next"))
-			{
 				image.change(1);
-			}
 		}
 	}
 }

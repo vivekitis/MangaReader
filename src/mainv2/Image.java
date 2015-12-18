@@ -13,8 +13,9 @@ public class Image extends JLabel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private ImageIcon image; 
-	Files files;
-	int img_no,chap_no;
+	private Files files;
+	private int img_no,chap_no;
+	private ImageList<String> imalgeList;
 	Image()
 	{
 		super();
@@ -24,7 +25,7 @@ public class Image extends JLabel{
 		image = new ImageIcon(f.getAbsolutePath());
 		this.setIcon(image);
 		this.getParent().revalidate();
-		System.out.println(f.getAbsolutePath());
+		//System.out.println(f.getAbsolutePath());
 	}
 	void change(int n)
 	{
@@ -34,19 +35,15 @@ public class Image extends JLabel{
 		if(n>0)
 		{
 			img_no=files.getImgno();
-			System.out.println(n+" "+img_no);
 			chap_no=files.getChapno();
-			System.out.println("Image count : "+files.getImg_count());
-			if(files.getImg_count()>img_no+1)
+			if((files.getImg_count()>img_no+1)&&(n==1))
 			{
-				System.out.println("image no:"+img_no);
 				img_no++;
 				files.setImgno(img_no);
 				setImage(files.getImage(img_no));
 			}
-			else if(files.getChap_count()>chap_no+1)
+			else if((files.getChap_count()>chap_no+1)|(n==2))
 			{
-				System.out.println("New Chap++"+files.getChapno()+" "+(++chap_no));
 				files.setImgno(0);
 				chap_no++;
 				files.setChapno(chap_no);
@@ -54,23 +51,19 @@ public class Image extends JLabel{
 				setImage(files.getImage(0));
 			}
 		}
-		else
+		else if(n<0)
 		{
 			
 			img_no=files.getImgno();
-			System.out.println(n+" "+img_no);
 			chap_no=files.getChapno();
-			System.out.println("Image count : "+files.getImg_count());
-			if(img_no-1>=0)
+			if((img_no-1>=0)&&(n==-1))
 			{
-				System.out.println("image no:"+img_no);
 				img_no--;
 				files.setImgno(img_no);
 				setImage(files.getImage(img_no));
 			}
-			else if(chap_no-1>=0)
+			else if((chap_no-1>=0)|(n==-2))
 			{
-				System.out.println("New Chap--");
 				files.setImgno(0);
 				chap_no--;
 				files.setChapno(chap_no);
@@ -85,6 +78,8 @@ public class Image extends JLabel{
 		image = new ImageIcon(files.getImages()[0].getAbsolutePath());
 		this.setIcon(image);
 		this.getParent().revalidate();
+		imalgeList.setImages(files.getChapter().list());
+		
 	}
 	public void scroll(int i) {
 		JScrollBar jsb=((JScrollPane) getParent().getParent()).getVerticalScrollBar();
@@ -96,5 +91,17 @@ public class Image extends JLabel{
 			if(jsb.getValue()-10>jsb.getMinimum())
 				jsb.setValue(jsb.getValue()-10);
 			else jsb.setValue(jsb.getMinimum());
+	}
+	/**
+	 * @return the imalgeList
+	 */
+	public ImageList<String> getImalgeList() {
+		return imalgeList;
+	}
+	/**
+	 * @param imalgeList the imalgeList to set
+	 */
+	public void setImalgeList(ImageList<String> imalgeList) {
+		this.imalgeList = imalgeList;
 	}
 }

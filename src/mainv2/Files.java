@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileFilter;
 
 public class Files{
-	//private String home="C:\\Users\\Vivek\\Downloads\\My Mangas";
 	private File chapter,manga;
 	private File[] chapters,images;
 	int chapno=0,imgno=0,chap_count=0,img_count=0;

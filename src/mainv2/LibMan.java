@@ -13,12 +13,12 @@ public class LibMan extends JTree{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	File Library;
+	private File Library;
 	private DefaultTreeModel tm;
-	File[] mangas;
-	Files files;
-	JTree tree;
-	Image image;
+	private File[] mangas;
+	private Files files;
+	private JTree tree;
+	private Image image;
 	LibMan()
 	{
 		super();
@@ -34,14 +34,14 @@ public class LibMan extends JTree{
 		DefaultMutableTreeNode root=new DefaultMutableTreeNode(Library.getName());
 		tm.setRoot(root);
 		DefaultMutableTreeNode node;
-		System.out.println("No. of Mangas "+mangas.length);
+		//System.out.println("No. of Mangas "+mangas.length);
 		for(int i=0;i<mangas.length;i++)
 		{
 			DefaultMutableTreeNode node2;
 			node=new DefaultMutableTreeNode(mangas[i].getName());
 			root.add(node);
 			File[] temp2=mangas[i].listFiles();
-			System.out.println("No of Chapters "+temp2.length);
+			//System.out.println("No of Chapters "+temp2.length);
 			for(int j=0;j<temp2.length;j++)
 			{
 				node2=new DefaultMutableTreeNode(temp2[j].getName());
@@ -51,10 +51,11 @@ public class LibMan extends JTree{
 		this.expandRow(0);
 		this.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener(){
 
+			@SuppressWarnings("synthetic-access")
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
 				DefaultMutableTreeNode file=(DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-				System.out.println(file.toString());
+				//System.out.println(file.toString());
 				String filename=file.toString();
 				if(filename.equals("My Mangas"))
 					return;
