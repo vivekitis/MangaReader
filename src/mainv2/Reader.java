@@ -56,6 +56,7 @@ class Body extends JFrame implements Runnable{
 		jsp.setDividerLocation(100);
 		setNav(new JPanel());
 		getNav().add(imageList=new ImageList<>());
+		image.setImalgeList(imageList);
 	}
 	@Override
 	public void run() {
@@ -106,23 +107,26 @@ class Body extends JFrame implements Runnable{
 		this.nav = nav;
 	}
 
-	class Events implements ActionListener, KeyListener {
+	private class Events implements ActionListener, KeyListener {
+		public Events() {
+		}
+
 		@Override
 		public void keyTyped(KeyEvent e) {}
 
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode()==KeyEvent.VK_LEFT)
-				image.change(-1);
+				image.change(Image.PREV_IMAGE);
 			else if(e.getKeyCode()==KeyEvent.VK_RIGHT)
-				image.change(1);
+				image.change(Image.NEXT_IMAGE);
 			else if(e.getKeyCode()==KeyEvent.VK_DOWN)
 				if(e.getModifiers()==InputEvent.CTRL_MASK)
-					image.change(2);
+					image.change(Image.NEXT_CHAP);
 				else	image.scroll(1);
 			else if(e.getKeyCode()==KeyEvent.VK_UP)
 				if(e.getModifiers()==InputEvent.CTRL_MASK)
-					image.change(-2);
+					image.change(Image.PREV_CHAP);
 				else 	image.scroll(-1);
 			}
 	
