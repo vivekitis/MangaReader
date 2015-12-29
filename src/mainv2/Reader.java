@@ -41,19 +41,18 @@ class Body extends JFrame implements Runnable{
 	private JButton button;
 	private LibMan libMan=new LibMan();
 	private Events events=new Events();
-	private ImageList<String> imageList;
-	Files files;
-	ImageLabel imageLabel;
+	private ImageList<String> imageList=new ImageList<>();
+	private Files files=new Files();;
+	private ImageLabel imageLabel=new ImageLabel();
 	Body()
 	{
 		super("Manga Reader");
 		this.addWindowListener(new BasicWindowMonitor());
 		menubar=new JMenuBar();
-		files=new Files();
 		setNav(new JPanel());
-		getNav().add(imageList=new ImageList<>());
+		getNav().add(imageList);
 		jsp1=new JScrollPane(libMan);
-		jsp2=new JScrollPane(imageLabel=new ImageLabel());
+		jsp2=new JScrollPane(imageLabel);
 		libMan.setFiles(files);
 		imageList.setFiles(files);
 		jsp=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,jsp1,jsp2);
@@ -103,6 +102,7 @@ class Body extends JFrame implements Runnable{
 		this.nav = nav;
 	}
 
+	@SuppressWarnings("synthetic-access")
 	private class Events implements ActionListener, KeyListener {
 		public Events() {
 		}

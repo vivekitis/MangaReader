@@ -19,6 +19,7 @@ public class Files
 	/**
 	 * @param manga the manga to set
 	 */
+	Files(){}
 	void newChapter(File f)
 	{
 		manga.setManga(f.getParentFile());
