@@ -1,6 +1,7 @@
 package mainv2;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileFilter;
 
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;

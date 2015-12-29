@@ -1,12 +1,10 @@
 package mainv2;
 
-import javax.swing.JComboBox;
-
-
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 
 public class ImageList<T> extends JComboBox<String>{
 
