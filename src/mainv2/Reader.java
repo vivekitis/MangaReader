@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -17,6 +18,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+
+
 public class Reader {
 	public static void main(String args[])
 	{
@@ -40,23 +43,25 @@ class Body extends JFrame implements Runnable{
 	private Events events=new Events();
 	private ImageList<String> imageList;
 	Files files;
-	Image image;
-	String home="C:\\Users\\Vivek\\Downloads\\My Mangas";
+	ImageLabel imageLabel;
 	Body()
 	{
 		super("Manga Reader");
 		this.addWindowListener(new BasicWindowMonitor());
 		menubar=new JMenuBar();
 		files=new Files();
-		jsp1=new JScrollPane(libMan);
-		jsp2=new JScrollPane(image=new Image());
-		libMan.setImage(image);
-		libMan.setFiles(files);
-		jsp=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,jsp1,jsp2);
-		jsp.setDividerLocation(100);
 		setNav(new JPanel());
 		getNav().add(imageList=new ImageList<>());
-		image.setImalgeList(imageList);
+		jsp1=new JScrollPane(libMan);
+		jsp2=new JScrollPane(imageLabel=new ImageLabel());
+		libMan.setFiles(files);
+		imageList.setFiles(files);
+		jsp=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,jsp1,jsp2);
+		jsp.setDividerLocation(100);
+		files.setLibman(libMan);
+		files.setImageList(imageList);
+		files.setImageLabel(imageLabel);
+		
 	}
 	@Override
 	public void run() {
@@ -86,20 +91,11 @@ class Body extends JFrame implements Runnable{
 		setVisible(true);	
 		setResizable(true);
 		libMan.setFocusable(false);
+		imageList.setFocusable(false);
+		jsp.setFocusable(true);
+		jsp2.requestFocus();
 	}
 
-	/**
-	 * @return the jsp2
-	 */
-	public JScrollPane getJsp2() {
-		return jsp2;
-	}
-	/**
-	 * @param jsp2 the jsp2 to set
-	 */
-	public void setJsp2(JScrollPane jsp2) {
-		this.jsp2 = jsp2;
-	}
 	public JPanel getNav() {
 		return nav;
 	}
@@ -117,41 +113,38 @@ class Body extends JFrame implements Runnable{
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode()==KeyEvent.VK_LEFT)
-				image.change(Image.PREV_IMAGE);
+				files.changeImage(Files.PREV_IMAGE);
 			else if(e.getKeyCode()==KeyEvent.VK_RIGHT)
-				image.change(Image.NEXT_IMAGE);
+				files.changeImage(Files.NEXT_IMAGE);
 			else if(e.getKeyCode()==KeyEvent.VK_DOWN)
 				if(e.getModifiers()==InputEvent.CTRL_MASK)
-					image.change(Image.NEXT_CHAP);
-				else	image.scroll(1);
+					files.changeChapter(Files.NEXT_CHAP);
+				else	imageLabel.scroll(1);
 			else if(e.getKeyCode()==KeyEvent.VK_UP)
 				if(e.getModifiers()==InputEvent.CTRL_MASK)
-					image.change(Image.PREV_CHAP);
-				else 	image.scroll(-1);
+					files.changeChapter(Files.PREV_CHAP);
+				else 	imageLabel.scroll(-1);
 			}
 	
 		@Override
 		public void keyReleased(KeyEvent e) {}
 	
-		@SuppressWarnings("synthetic-access")
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("Open"))
 			{
-				JFileChooser dialog=new JFileChooser(home);
+				JFileChooser dialog=new JFileChooser(Files.home);
 				dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				if(dialog.showOpenDialog(new JPanel())==JFileChooser.APPROVE_OPTION)
 				{
-					files.setChapter(dialog.getSelectedFile());
-					files.setManga(dialog.getSelectedFile().getParentFile());
-					image.setImalgeList(imageList);
-					image.draw(files);
+					File f=dialog.getSelectedFile();
+					files.newChapter(f);
 				}		
 			}
 			else if(e.getActionCommand().equals("Prev"))
-				image.change(-1);
+				files.changeImage(Files.PREV_IMAGE);
 			else if(e.getActionCommand().equals("Next"))
-				image.change(1);
+				files.changeImage(Files.NEXT_IMAGE);
 		}
 	}
 }

@@ -1,104 +1,114 @@
 package mainv2;
 
 import java.io.File;
-import java.io.FileFilter;
+public class Files
+{
 
-public class Files{
-	private File chapter,manga;
-	private File[] chapters,images;
-	int chapno=0,imgno=0,chap_count=0,img_count=0;
-	private void updatemanga() 
+	private Manga manga=new Manga();
+	private Chapter chapter=new Chapter();
+	private Image image=new Image();
+	boolean change=false;
+	private LibMan libman;
+	private ImageList<?> imageList;
+	private ImageLabel imageLabel;
+	static String home="C:\\Users\\Vivek\\Downloads\\My Mangas";
+	static int NEXT_IMAGE=100;
+	static int PREV_IMAGE=-NEXT_IMAGE;
+	static int NEXT_CHAP=200;
+	static int PREV_CHAP=-NEXT_CHAP;
+	/**
+	 * @param manga the manga to set
+	 */
+	void newChapter(File f)
 	{
-		chapters=manga.listFiles(new FileFilter(){
-		public boolean accept(File pathname) {
-			if(pathname.isDirectory())
-				return true;
-			return false;	}});
-		for(chapno=0;chapno<chapters.length;chapno++)
-			if(chapter.getName().equals(chapters[chapno].getName()))
-				break;
-		chap_count=manga.listFiles().length;
-		images=chapter.listFiles();
+		manga.setManga(f.getParentFile());
+		chapter.setChapter(f);
+		manga.setChapterNo(chapter);
+		image.setImage(chapter.getImage(0));
+		imageLabel.setImage(image.Image,false);
+		imageList.fillBox(chapter.getImages());
 	}
-	File getManga()
+	void changeImage(int number)
 	{
-		return manga;
+		int imgno=chapter.getImage_No();
+		change=true;
+		if(number==NEXT_IMAGE)
+		{
+			if(imgno==chapter.getImageCount()-1)
+				changeChapter(NEXT_CHAP);
+			else
+			{
+				chapter.setImage_No(++imgno);
+				image.setImage(chapter.getImage(imgno));
+				imageLabel.setImage(image.Image,false);
+				imageList.setSelectedIndex(imgno);
+			}
+		}
+		else if(number==PREV_IMAGE)
+		{
+			if(imgno==0)
+				changeChapter(PREV_CHAP);
+			else
+			{
+				chapter.setImage_No(--imgno);
+				image.setImage(chapter.getImage(imgno));
+				imageLabel.setImage(image.Image,false);
+				imageList.setSelectedIndex(imgno);
+			}
+		}
+		else
+		{
+			chapter.setImage_No(number);
+			image.setImage(chapter.getImage(number));
+			imageLabel.setImage(image.Image,false);
+		}
 	}
-	void setChapter(File x)
+	void changeChapter(int number)
 	{
-		chapter=x;
-		img_count=chapter.listFiles().length;
+		int chapno=manga.getChapter_No();
+		if(number==NEXT_CHAP)
+		{
+			if(chapno!=manga.getChapterCount()-1);
+			{
+				manga.setChapter_No(++chapno);
+				chapter.setChapter(manga.getChapter(chapno));
+				image.setImage(chapter.getImage(0));
+				imageLabel.setImage(image.Image,false);
+				int row=libman.getSelectionModel().getLeadSelectionRow();
+				libman.setSelectionInterval(row+1, row+1);
+			}
+		}
+		else if(number==PREV_CHAP)
+			if(chapno!=0)
+			{
+				manga.setChapter_No(--chapno);
+				chapter.setChapter(manga.getChapter(chapno));
+				image.setImage(chapter.getImage(0));
+				imageLabel.setImage(image.Image,false);
+				int row=libman.getSelectionModel().getLeadSelectionRow();
+				libman.setSelectionInterval(row-1, row-1);
+			}
 	}
-	File getChapter()
+	/**
+	 * @param libman the libman to set
+	 */
+	public void setLibman(LibMan libman) {
+		this.libman = libman;
+	}
+	/**
+	 * @param imageList the imageList to set
+	 */
+	public void setImageList(ImageList<?> imageList) {
+		this.imageList = imageList;
+	}
+	/**
+	 * @param imageLabel the imageLabel to set
+	 */
+	public void setImageLabel(ImageLabel imageLabel) {
+		this.imageLabel = imageLabel;
+	}
+	public String Currentimg()
 	{
-		return chapter;
+		return image.Image_Name;
 	}
-	void setManga(File x)
-	{
-		if(manga==null|manga!=x)
-		{	
-			manga=x;
-			updatemanga();
-		}		
-	}
-	void updateChap(int chapno)
-	{
-		this.chapter=chapters[chapno];
-		images=chapter.listFiles();
-		img_count=images.length;
-	}
-	/**
-	 * @return the chapno
-	 */
-	public int getChapno() {
-		return chapno;
-	}
-	/**
-	 * @param chapno the chapno to set
-	 */
-	public void setChapno(int chapno) {
-		this.chapno = chapno;
-	}
-	/**
-	 * @return the imgno
-	 */
-	public int getImgno() {
-		return imgno;
-	}
-	/**
-	 * @param imgno the imgno to set
-	 */
-	public void setImgno(int imgno) {
-		if(chapter.list().length>imgno)
-			this.imgno = imgno;
-	}
-	/**
-	 * @return the images
-	 */
-	public File[] getImages() {
-		return images;
-	}
-	/**
-	 * @param images the images to set
-	 */
-	public void setImages(File[] images) {
-		this.images = images;
-	}
-	public File getImage(int no)
-	{
-		return images[no];
-	}
-	/**
-	 * @return the chap_count
-	 */
-	public int getChap_count() {
-		return chap_count;
-	}
-	/**
-	 * @return the img_count
-	 */
-	public int getImg_count() {
-		return img_count;
-	}
-	
 }
